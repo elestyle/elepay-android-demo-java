@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ElePayDemoAndroidJava</string>
+
+    <string name="btn_credit_card_image_desc" translatable="false">Credit card icon</string>
+    <string name="btn_alipay_image_desc" translatable="false">Alipay icon</string>
+    <string name="btn_union_pay_image_desc" translatable="false">Union Pay icon</string>
+
+    <string name="input_hint_amount">Amount</string>
+    <string name="input_error_not_empty">Can\'t be empty.</string>
+
+    <string name="payment_method_credit_card">Credit Card</string>
+    <string name="payment_method_alipay">Alipay</string>
+    <string name="payment_method_union_pay">UnionPay</string>
+    <string name="payment_method_paypal">PayPal</string>
+
+    <string name="button_pay_title">Pay</string>
+    <string name="content_processing">Processing…</string>
+    <string name="activity_main_test_mode_title">Test Mode</string>
+    <string name="activity_main_text_mode_desc">Test Mode is used to test your product without actual purchasing.</string>
+
+    <string name="dialog_button_title_ok">OK</string>
+    <string name="dialog_button_title_cancel">Cancel</string>
+    <string name="test_mode_switch_restart_prompt">Has to restart app to chagne the test mode.</string>
+    <string name="product_list_item_image_desc" translatable="false">product list item image desc</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/paymentMethodListItemImageButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_margin="16dp"
+        android:scaleType="centerInside"
+        android:background="@drawable/button_bg"
+        android:contentDescription="@string/btn_credit_card_image_desc"/>
+</FrameLayout>
