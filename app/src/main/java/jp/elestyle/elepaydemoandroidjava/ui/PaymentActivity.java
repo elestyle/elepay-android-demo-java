@@ -153,7 +153,9 @@ public class PaymentActivity extends AppCompatActivity {
             finishWithoutValidKeys();
         }
 
-        paymentManager = new PaymentManager(testModeSwitch.isChecked(), testModeKey, liveModeKey, baseUrl, paymentUrl, new PaymentResultHandler() {
+        String appScheme = getString(R.string.app_scheme);
+
+        paymentManager = new PaymentManager(testModeSwitch.isChecked(), appScheme, testModeKey, liveModeKey, baseUrl, paymentUrl, new PaymentResultHandler() {
             @Override
             public void onPaymentSucceeded(final String paymentId) {
                 runOnUiThread(new Runnable() {

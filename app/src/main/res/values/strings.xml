@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">ElePayDemoAndroidJava</string>
 
+    <string name="app_scheme" translatable="false">elepaydemojava</string>
+
     <string name="btn_credit_card_image_desc" translatable="false">Credit card icon</string>
     <string name="btn_alipay_image_desc" translatable="false">Alipay icon</string>
     <string name="btn_union_pay_image_desc" translatable="false">Union Pay icon</string>

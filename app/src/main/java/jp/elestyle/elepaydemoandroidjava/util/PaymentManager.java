@@ -25,6 +25,7 @@ public class PaymentManager {
 
 
     public PaymentManager(boolean isTestMode,
+                          String appScheme,
                           String testModeKey,
                           String liveModeKey,
                           String baseUrl,
@@ -33,13 +34,13 @@ public class PaymentManager {
         this.isTestMode = isTestMode;
         this.paymentUrl = paymentUrl;
         this.resultHandler = handler;
-        setup(testModeKey, liveModeKey, baseUrl);
+        setup(appScheme, testModeKey, liveModeKey, baseUrl);
     }
 
-    private void setup(String testModeKey,
+    private void setup(String appScheme,
+                       String testModeKey,
                        String liveModeKey,
                        String baseUrl) {
-        String appScheme = "elepaydemojava";
 
         String appKey = isTestMode ? testModeKey : liveModeKey;
         ElePay.setup(appScheme, appKey, baseUrl);
@@ -68,11 +69,11 @@ public class PaymentManager {
                     @Override
                     public void onElePayResult(@NotNull ElePayResult elePayResult) {
                         if (elePayResult instanceof ElePayResult.Succeeded) {
-                            String id = ((ElePayResult.Succeeded)elePayResult).getPaymentId();
+                            String id = ((ElePayResult.Succeeded) elePayResult).getPaymentId();
                             resultHandler.onPaymentSucceeded(id);
                         } else if (elePayResult instanceof ElePayResult.Failed) {
                             String id = ((ElePayResult.Failed) elePayResult).getPaymentId();
-                            ElePayError error = ((ElePayResult.Failed)elePayResult).getError();
+                            ElePayError error = ((ElePayResult.Failed) elePayResult).getError();
                             resultHandler.onPaymentFailed(id, error);
                         } else if (elePayResult instanceof ElePayResult.Canceled) {
                             String id = ((ElePayResult.Canceled) elePayResult).getPaymentId();
