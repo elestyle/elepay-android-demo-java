@@ -3,30 +3,19 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="jp.elestyle.elepaydemoandroidjava">
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_SETTINGS"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="com.alipay.mobile.command.trigger.permission"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <!--<permission-->
-    <!--android:name="com.alipay.mobile.command.trigger.permission"-->
-    <!--android:protectionLevel="signature"/>-->
-    <!-- 照相的权限 -->
-    <uses-feature android:name="android.hardware.camera"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <uses-feature android:name="android.hardware.camera"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.hardware.camera.autofocus"/>
-    <!-- 读取短信验证码 可选 -->
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <!-- 录像需要的权限 -->
-    <uses-permission android:name="android.permission.RECORD_VIDEO"/>
-    <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD"/>
-    <uses-permission android:name="android.permission.NFC"/>
 
+    <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
+
+    <uses-permission android:name="android.permission.NFC" />
     <uses-feature android:name="android.hardware.nfc.hce"/>
 
 
