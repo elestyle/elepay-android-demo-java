@@ -6,8 +6,8 @@ android {
         applicationId "jp.elestyle.elepaydemoandroidjava"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,7 +27,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'jp.elestyle.androidapp:elepay:1.1.0'
+    implementation 'jp.elestyle.androidapp:elepay:1.1.2'
 
     implementation 'com.basgeekball:awesome-validation:4.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
