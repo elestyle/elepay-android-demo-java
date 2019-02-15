@@ -3,7 +3,10 @@ package jp.elestyle.elepaydemoandroidjava.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
@@ -27,6 +30,7 @@ import jp.elestyle.androidapp.elepay.ElePayError;
 import jp.elestyle.elepaydemoandroidjava.R;
 import jp.elestyle.elepaydemoandroidjava.ui.adapter.PaymentMethodListAdapter;
 import jp.elestyle.elepaydemoandroidjava.ui.adapter.PaymentMethodListAdapterListener;
+import jp.elestyle.elepaydemoandroidjava.util.ElepayAPIKeys;
 import jp.elestyle.elepaydemoandroidjava.util.PaymentManager;
 import jp.elestyle.elepaydemoandroidjava.util.PaymentMethod;
 import jp.elestyle.elepaydemoandroidjava.util.PaymentResultHandler;
@@ -52,12 +56,17 @@ public class PaymentActivity extends AppCompatActivity {
     //                   \           /
     //                    \aaaaaaaaa/
     //
-    // Replace your keys here.
+    private String testModePublicKey = PaymentManager.INVALID_KEY;
+    private String liveModePublicKey = PaymentManager.INVALID_KEY;
+    // The following keys are used to generate charge data.
+    // You may consider create your charge data from your server for payment management.
+    // So these keys may not live here.
+    private String testModeSecretKey = PaymentManager.INVALID_KEY;
+    private String liveModeSecretKey = PaymentManager.INVALID_KEY;
+    // ↑ Replace your keys above
     // -----------------------------------------------------------------
-    private String testModeKey = PaymentManager.INVALID_TEST_KEY;
-    private String liveModeKey = PaymentManager.INVALID_LIVE_KEY;
     // Change this url to your own server to request charge object.
-    private String paymentUrl = PaymentManager.DEFAULT_PAYMENT_URL;
+    private String paymentUrl = PaymentManager.MAKE_CHARGE_DEMO_URL;
     private PaymentManager paymentManager;
     private String amount;
     private PaymentMethod paymentMethod = PaymentMethod.CREDIT_CARD;
@@ -122,9 +131,7 @@ public class PaymentActivity extends AppCompatActivity {
     private void setupPaymentManager() {
         String baseUrl;
         String paymentUrl;
-        // You should save your key somewhere else.
-        String testModeKey;
-        String liveModeKey;
+        ElepayAPIKeys apiKeys = new ElepayAPIKeys();
         try {
             InputStream fileStream = getAssets().open("config.json");
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(Math.max(8 * 1024, fileStream.available()));
@@ -138,24 +145,25 @@ public class PaymentActivity extends AppCompatActivity {
             JSONObject json = new JSONObject(outputStream.toString());
             baseUrl = json.optString("baseUrl", "");
             paymentUrl = json.optString("paymentUrl", this.paymentUrl);
-            testModeKey = json.optString("testModeKey", this.testModeKey);
-            liveModeKey = json.optString("liveModeKey", this.liveModeKey);
+            apiKeys.publicTestKey = json.optString("pk_test", this.testModePublicKey);
+            apiKeys.publicLiveKey = json.optString("pk_live", this.liveModePublicKey);
+            apiKeys.secretTestKey = json.optString("sk_test", this.testModeSecretKey);
+            apiKeys.secretLiveKey = json.optString("sk_live", this.liveModeSecretKey);
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             baseUrl = "";
             paymentUrl = this.paymentUrl;
-            testModeKey = this.testModeKey;
-            liveModeKey = this.liveModeKey;
+            apiKeys.publicTestKey = this.testModePublicKey;
+            apiKeys.publicLiveKey = this.liveModePublicKey;
+            apiKeys.secretTestKey = this.testModeSecretKey;
+            apiKeys.secretLiveKey = this.liveModeSecretKey;
         }
 
-        if (testModeKey.equals(PaymentManager.INVALID_TEST_KEY)
-                || liveModeKey.equals(PaymentManager.INVALID_LIVE_KEY)) {
+        if (!apiKeys.areAllKeysAvailable()) {
             finishWithoutValidKeys();
         }
 
-        String appScheme = getString(R.string.app_scheme);
-
-        paymentManager = new PaymentManager(testModeSwitch.isChecked(), appScheme, testModeKey, liveModeKey, baseUrl, paymentUrl, new PaymentResultHandler() {
+        paymentManager = new PaymentManager(testModeSwitch.isChecked(), apiKeys, baseUrl, paymentUrl, new PaymentResultHandler() {
             @Override
             public void onPaymentSucceeded(final String paymentId) {
                 runOnUiThread(new Runnable() {
@@ -201,7 +209,7 @@ public class PaymentActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showResultMessage(permissionMsg.toString());
+                            showPermissionRequestDialog(permissionMsg.toString());
                         }
                     });
                     message = null;
@@ -287,7 +295,24 @@ public class PaymentActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .create()
                 .show();
+    }
 
+    private void showPermissionRequestDialog(String permissions) {
+        new AlertDialog.Builder(this)
+                .setMessage("Following permissions are required.\n" + permissions)
+                .setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri data = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(data);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
     }
 
     private void selectPaymnetMethod(PaymentMethod paymentMethod) {

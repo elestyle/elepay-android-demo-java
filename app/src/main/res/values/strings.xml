@@ -14,6 +14,7 @@
     <string name="payment_method_alipay">Alipay</string>
     <string name="payment_method_union_pay">UnionPay</string>
     <string name="payment_method_paypal">PayPal</string>
+    <string name="payment_method_linepay">Line Pay</string>
 
     <string name="button_pay_title">Pay</string>
     <string name="content_processing">Processing…</string>

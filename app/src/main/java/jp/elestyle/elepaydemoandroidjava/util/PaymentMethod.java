@@ -8,7 +8,7 @@ public enum PaymentMethod {
     CREDIT_CARD("creditcard"),
     UNION_PAY("unionpay"),
     PAYPAL("paypal"),
-    GOOGLE_PAY("google");
+    LINE_PAY("linepay");
 
     private String raw;
 
@@ -37,6 +37,10 @@ public enum PaymentMethod {
             case "paypal":
                 return PAYPAL;
 
+            case "linepay":
+            case "line":
+                return LINE_PAY;
+
             default:
                 throw new IllegalArgumentException("Unsupported payment method: " + rawValue);
         }
@@ -56,6 +60,8 @@ public enum PaymentMethod {
                 return R.string.payment_method_union_pay;
             case PAYPAL:
                 return R.string.payment_method_paypal;
+            case LINE_PAY:
+                return R.string.payment_method_linepay;
             default:
                 return 0;
         }

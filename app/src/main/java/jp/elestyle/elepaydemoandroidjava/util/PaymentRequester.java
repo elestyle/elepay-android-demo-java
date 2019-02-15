@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -16,7 +17,7 @@ import java.util.Map;
 interface PaymentRequesterResultListener {
     void onJSONResult(JSONObject jsonObject);
 
-    void onError();
+    void onError(String message);
 }
 
 class PaymentRequester implements Runnable {
@@ -53,17 +54,44 @@ class PaymentRequester implements Runnable {
             writer.close();
             outputStream.close();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder result = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                result.append(line);
+            InputStream inputStream = connection.getErrorStream();
+            if (inputStream != null) {
+                handleError(inputStream);
+            } else {
+                inputStream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder result = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                JSONObject json = new JSONObject(result.toString());
+                resultListener.onJSONResult(json);
             }
-            JSONObject json = new JSONObject(result.toString());
-            resultListener.onJSONResult(json);
         } catch (JSONException | IOException e) {
             e.printStackTrace();
-            resultListener.onError();
+            resultListener.onError(e.getLocalizedMessage());
         }
+    }
+
+    private void handleError(InputStream errorStream) {
+        StringBuilder rawErrorStr = new StringBuilder();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                rawErrorStr.append(line);
+            }
+        } catch (Exception e) {
+            rawErrorStr.append(e.toString());
+        }
+
+        JSONObject jsonError;
+        try {
+            jsonError = new JSONObject(rawErrorStr.toString());
+        } catch (Exception e) {
+            jsonError = new JSONObject();
+        }
+        resultListener.onError(jsonError.optString("message", ""));
     }
 }

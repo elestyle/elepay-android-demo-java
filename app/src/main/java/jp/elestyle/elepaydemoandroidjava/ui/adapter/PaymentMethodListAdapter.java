@@ -21,6 +21,7 @@ public class PaymentMethodListAdapter extends RecyclerView.Adapter<PaymentMethod
         add(new PaymentMethodItemData(R.drawable.ic_alipay, PaymentMethod.ALIPAY));
         add(new PaymentMethodItemData(R.mipmap.ic_union_pay, PaymentMethod.UNION_PAY));
         add(new PaymentMethodItemData(R.mipmap.ic_paypal_logo_200px, PaymentMethod.PAYPAL));
+        add(new PaymentMethodItemData(R.mipmap.ic_linepay, PaymentMethod.LINE_PAY));
     }};
     private int selectedPosition = 0;
 
