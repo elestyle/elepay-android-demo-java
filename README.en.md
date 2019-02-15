@@ -23,8 +23,13 @@ Open the project in Android Studio and replace the *API key*s in
 app/src/main/java/jp/elestyle/elepaydemoandroidjava/ui/PaymentActivity.java
 
 ``` java
-    private val testModeKey = PaymentManager.INVALID_TEST_KEY
-    private val liveModeKey = PaymentManager.INVALID_LIVE_KEY
+    private String testModePublicKey = PaymentManager.INVALID_KEY;
+    private String liveModePublicKey = PaymentManager.INVALID_KEY;
+    // The following keys are used to generate charge data.
+    // You may consider create your charge data from your server for payment management.
+    // So these keys may not live here.
+    private String testModeSecretKey = PaymentManager.INVALID_KEY;
+    private String liveModeSecretKey = PaymentManager.INVALID_KEY;
 ```
 
 After running, there are 2 products to demo the payment processing. And each product can be payed by several payment methods.
