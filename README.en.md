@@ -20,7 +20,7 @@ This is a demo application for the usage of elepay Android SDK using Java langua
 
 You can either `git clone` or download the zip of the project.
 Open the project in Android Studio and replace the *API key*s in
-app/src/main/java/jp/elestyle/elepaydemoandroidjava/ui/PaymentActivity.java
+> app/src/main/java/jp/elestyle/elepaydemoandroidjava/ui/PaymentActivity.java
 
 ``` java
     private String testModePublicKey = PaymentManager.INVALID_KEY;
